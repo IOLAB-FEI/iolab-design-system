@@ -7,6 +7,7 @@
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800;9..40,900&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
   *{margin:0;padding:0;box-sizing:border-box}
+  html, body{ overflow-x:clip; }
 
   /* ── Light tokens ───────────────────────────────────────────────── */
   :root[data-theme="light"]{
@@ -82,7 +83,7 @@
     padding:14px 32px; display:flex; align-items:center; justify-content:space-between; gap:16px;
   }
   .brand{display:flex; align-items:center; gap:14px}
-  .brand-mark{width:36px; height:36px; border-radius:8px; background:var(--surface-container-highest); display:flex; align-items:center; justify-content:center; padding:5px}
+  .brand-mark{width:36px; height:36px; border-radius:8px; background:#ffffff; border:1px solid var(--outline-variant); display:flex; align-items:center; justify-content:center; padding:5px}
   .brand-text{display:flex; flex-direction:column; line-height:1.1}
   .brand-text b{font-size:14px; font-weight:900; letter-spacing:-.2px}
   .brand-text span{font-size:10px; font-weight:700; letter-spacing:1.4px; color:var(--outline); text-transform:uppercase; margin-top:2px}
@@ -91,6 +92,39 @@
   .topbar-actions .v-btn{background:var(--primary) !important; color:var(--on-primary) !important; border:1px solid var(--primary) !important;}
   .topbar-actions .v-btn.is-nav{background:transparent !important; color:var(--on-surface) !important; border:1px solid var(--outline-variant) !important;}
   .topbar-actions .v-btn.is-nav:hover{background:var(--surface-container) !important; filter:none}
+
+  /* Label variants for responsive button text */
+  .lbl-md, .lbl-sm{display:none}
+
+  /* Mobile topbar — single row that progressively shrinks */
+  @media (max-width:760px){
+    .topbar{ padding:12px 16px; gap:10px; }
+    .brand{ gap:10px; flex:1 1 auto; min-width:0; }
+    .brand-mark{ flex-shrink:0; width:34px; height:34px; }
+    .brand-text{ min-width:0; flex:1 1 auto; overflow:hidden; }
+    .brand-text b{ font-size:13px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; display:block; }
+    .brand-text span{ display:none; }
+    .topbar-actions{ gap:6px; flex-shrink:0; }
+    .topbar-actions .v-btn{ padding:0 11px !important; height:32px !important; font-size:11px !important; letter-spacing:.03em !important; }
+    .theme-toggle{ padding:2px; }
+    .theme-toggle button{ padding:5px 10px; font-size:11px; }
+  }
+  @media (max-width:560px){
+    /* Shorter "↓ Stiahnuť config" → "↓ Config" */
+    #dlConfigTop .lbl-lg{display:none}
+    #dlConfigTop .lbl-md{display:inline}
+  }
+  @media (max-width:420px){
+    /* Drop brand subtitle text entirely, keep logo mark */
+    .brand-text{ display:none; }
+    .theme-toggle button{ padding:5px 8px; font-size:10px; }
+    /* Icon-only buttons */
+    #dlConfigTop .lbl-md{display:none}
+    #dlConfigTop .lbl-sm{display:inline; font-size:14px; }
+    #goLogo .lbl-lg{display:none}
+    #goLogo .lbl-sm{display:inline; font-size:14px; }
+    .topbar-actions .v-btn{ padding:0 10px !important; min-width:34px; }
+  }
   .theme-toggle{
     display:inline-flex; padding:2px; border-radius:999px; background:var(--surface-container-highest); border:1px solid var(--outline-variant);
   }
@@ -102,6 +136,7 @@
 
   /* ── Layout ─────────────────────────────────────────────────────── */
   .shell{display:grid; grid-template-columns:240px 1fr; min-height:calc(100vh - 65px);}
+  .shell > *{ min-width:0; } /* allow grid children to shrink under wide descendants (code blocks) */
   @media (max-width:980px){ .shell{grid-template-columns:1fr} .sidebar{display:none} }
 
   .sidebar{
@@ -155,6 +190,11 @@
   /* utility strip — surface dim / surface / bright + on-surface + outlines */
   .util-strip{display:grid; grid-template-columns:repeat(3,1fr); gap:14px}
   @media (max-width:740px){ .util-strip{grid-template-columns:1fr} }
+
+  /* Hero summary strip — primary/tertiary/secondary/font card grid */
+  .hero-strip{display:grid; grid-template-columns:repeat(4,1fr); gap:16px;}
+  @media (max-width:760px){ .hero-strip{grid-template-columns:repeat(2,1fr);} }
+  @media (max-width:420px){ .hero-strip{grid-template-columns:1fr;} }
 
   /* ── Component showcase ─────────────────────────────────────────── */
   .panel{
@@ -261,7 +301,7 @@
   .download-head .meta div{font-size:12px; color:var(--outline); margin-top:2px}
   .download-actions{display:flex; gap:8px}
   pre.code-block{
-    margin:0; padding:20px 22px; max-height:380px; overflow:auto;
+    margin:0; padding:20px 22px; max-width:100%; max-height:380px; overflow:auto;
     font-family:'DM Mono',monospace; font-size:11px; line-height:1.6;
     background:var(--surface-container-low); color:var(--on-surface);
   }
@@ -307,9 +347,9 @@
       <svg viewBox="30 22 67.5 80" fill="none" style="width:100%; height:100%">
         <rect x="30" y="56.5" width="7" height="15" rx="1.2" fill="#86dad3" opacity="0.55"/>
         <rect x="41" y="49.5" width="7" height="21.5" rx="1.2" fill="#86dad3" opacity="0.85"/>
-        <text x="72" y="56" font-family="DM Sans, sans-serif" font-weight="900" font-size="62" fill="currentColor" text-anchor="middle" dominant-baseline="middle" letter-spacing="-3">io</text>
-        <line x1="30" y1="76" x2="97.5" y2="76" stroke="currentColor" stroke-opacity="0.35" stroke-width="1.2"/>
-        <text x="66.25" y="96" font-family="DM Sans, sans-serif" font-weight="900" font-size="20" fill="currentColor" text-anchor="middle" letter-spacing="5">LAB</text>
+        <text x="72" y="56" font-family="DM Sans, sans-serif" font-weight="900" font-size="62" fill="#1e2a4a" text-anchor="middle" dominant-baseline="middle" letter-spacing="-3">io</text>
+        <line x1="30" y1="76" x2="97.5" y2="76" stroke="#1e2a4a" stroke-opacity="0.25" stroke-width="1.2"/>
+        <text x="66.25" y="96" font-family="DM Sans, sans-serif" font-weight="900" font-size="20" fill="#1e2a4a" text-anchor="middle" letter-spacing="5">LAB</text>
       </svg>
     </div>
     <div class="brand-text">
@@ -322,8 +362,8 @@
       <button data-theme="light" class="active">Light</button>
       <button data-theme="dark">Dark</button>
     </div>
-    <a class="v-btn is-nav" href="logo.html" style="height:36px; text-decoration:none">↗ Logo</a>
-    <button class="v-btn" id="dlConfigTop" style="height:36px">↓ Stiahnuť config</button>
+    <a class="v-btn is-nav" id="goLogo" href="logo.html" style="height:36px; text-decoration:none"><span class="lbl-lg">↗ Logo</span><span class="lbl-sm">↗</span></a>
+    <button class="v-btn" id="dlConfigTop" style="height:36px"><span class="lbl-lg">↓ Stiahnuť config</span><span class="lbl-md">↓ Config</span><span class="lbl-sm">↓</span></button>
   </div>
 </div>
 
@@ -365,7 +405,7 @@
         <span class="mono" style="font-size:13px; background:var(--surface-container); padding:2px 6px; border-radius:4px;">plugins/vuetify.js</span>.
       </p>
 
-      <div class="panel" style="display:grid; grid-template-columns:repeat(4,1fr); gap:16px;">
+      <div class="panel hero-strip">
         <div>
           <div class="sec-eyebrow" style="color:var(--outline)">Primary</div>
           <div style="display:flex; align-items:center; gap:10px; margin-top:6px;">
