@@ -1,0 +1,1200 @@
+<!DOCTYPE html>
+<html lang="sk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>IoLab — Design System</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800;9..40,900&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  *{margin:0;padding:0;box-sizing:border-box}
+
+  /* ── Light tokens ───────────────────────────────────────────────── */
+  :root[data-theme="light"]{
+    --background:#efeeeb;
+    --surface:#faf9f6;
+    --surface-dim:#dbdad7;
+    --surface-bright:#faf9f6;
+    --surface-container-lowest:#ffffff;
+    --surface-container-low:#f4f3f1;
+    --surface-container:#efeeeb;
+    --surface-container-high:#e9e8e5;
+    --surface-container-highest:#e3e2e0;
+    --on-surface:#131b2f;
+    --outline:#76777d;
+    --outline-variant:#c6c6cc;
+    --primary:#1e2a4a;
+    --on-primary:#ffffff;
+    --primary-container:#dae2fd;
+    --on-primary-container:#131b2f;
+    --secondary:#475569;
+    --on-secondary:#ffffff;
+    --secondary-container:#cee6f7;
+    --on-secondary-container:#061e2a;
+    --tertiary:#86dad3;
+    --on-tertiary:#1e2a4a;
+    --tertiary-container:#e8defc;
+    --on-tertiary-container:#1e182d;
+    --error:#ba1a1a;
+    --on-error:#ffffff;
+    --error-container:#ffdad6;
+    --on-error-container:#410002;
+  }
+
+  /* ── Dark tokens ────────────────────────────────────────────────── */
+  :root[data-theme="dark"]{
+    --background:#171f33;
+    --surface:#0a1326;
+    --surface-dim:#0a1326;
+    --surface-bright:#31394e;
+    --surface-container-lowest:#050d21;
+    --surface-container-low:#131b2f;
+    --surface-container:#171f33;
+    --surface-container-high:#222a3e;
+    --surface-container-highest:#2c3449;
+    --on-surface:#fefefe;
+    --outline:#909096;
+    --outline-variant:#45474c;
+    --primary:#fefefe;
+    --on-primary:#283045;
+    --primary-container:#3e465c;
+    --on-primary-container:#dae2fd;
+    --secondary:#dae2fd;
+    --on-secondary:#1d3340;
+    --secondary-container:#344957;
+    --on-secondary-container:#cee6f7;
+    --tertiary:#8fe3dc;
+    --on-tertiary:#332d43;
+    --tertiary-container:#4a435b;
+    --on-tertiary-container:#e8defc;
+    --error:#ffb4ab;
+    --on-error:#690005;
+    --error-container:#93000a;
+    --on-error-container:#ffb4ab;
+  }
+
+  html,body{font-family:'DM Sans',sans-serif;background:var(--background);color:var(--on-surface);min-height:100vh;line-height:1.45;font-feature-settings:'ss01';}
+  .mono{font-family:'DM Mono',ui-monospace,Menlo,monospace}
+
+  /* ── Top bar ────────────────────────────────────────────────────── */
+  .topbar{
+    position:sticky; top:0; z-index:50; background:var(--surface);
+    border-bottom:1px solid var(--outline-variant);
+    padding:14px 32px; display:flex; align-items:center; justify-content:space-between; gap:16px;
+  }
+  .brand{display:flex; align-items:center; gap:14px}
+  .brand-mark{width:36px; height:36px; border-radius:8px; background:var(--surface-container-highest); display:flex; align-items:center; justify-content:center; padding:5px}
+  .brand-text{display:flex; flex-direction:column; line-height:1.1}
+  .brand-text b{font-size:14px; font-weight:900; letter-spacing:-.2px}
+  .brand-text span{font-size:10px; font-weight:700; letter-spacing:1.4px; color:var(--outline); text-transform:uppercase; margin-top:2px}
+
+  .topbar-actions{display:flex; align-items:center; gap:8px}
+  .topbar-actions .v-btn{background:var(--primary) !important; color:var(--on-primary) !important; border:1px solid var(--primary) !important;}
+  .topbar-actions .v-btn.is-nav{background:transparent !important; color:var(--on-surface) !important; border:1px solid var(--outline-variant) !important;}
+  .topbar-actions .v-btn.is-nav:hover{background:var(--surface-container) !important; filter:none}
+  .theme-toggle{
+    display:inline-flex; padding:2px; border-radius:999px; background:var(--surface-container-highest); border:1px solid var(--outline-variant);
+  }
+  .theme-toggle button{
+    border:none; background:transparent; padding:7px 14px; border-radius:999px; cursor:pointer;
+    font-family:inherit; font-weight:700; font-size:11px; color:var(--outline); letter-spacing:.5px; text-transform:uppercase;
+  }
+  .theme-toggle button.active{background:var(--primary); color:var(--on-primary)}
+
+  /* ── Layout ─────────────────────────────────────────────────────── */
+  .shell{display:grid; grid-template-columns:240px 1fr; min-height:calc(100vh - 65px);}
+  @media (max-width:980px){ .shell{grid-template-columns:1fr} .sidebar{display:none} }
+
+  .sidebar{
+    border-right:1px solid var(--outline-variant); padding:24px 18px; position:sticky; top:65px;
+    align-self:start; height:calc(100vh - 65px); overflow:auto;
+  }
+  .nav-section{margin-bottom:18px}
+  .nav-title{font-size:10px; font-weight:800; letter-spacing:1.5px; text-transform:uppercase; color:var(--outline); margin-bottom:6px; padding:0 8px}
+  .nav-section a{
+    display:block; padding:7px 12px; border-radius:6px; text-decoration:none; color:var(--on-surface);
+    font-size:13px; font-weight:500; transition:background .15s;
+  }
+  .nav-section a:hover{background:var(--surface-container)}
+  .nav-section a.is-active{background:var(--primary-container); color:var(--on-primary-container); font-weight:700}
+
+  .content{padding:40px 48px 80px; max-width:1240px}
+  @media (max-width:680px){ .content{padding:28px 20px} }
+
+  /* ── Section ────────────────────────────────────────────────────── */
+  section{margin-bottom:64px}
+  .sec-eyebrow{
+    font-size:10px; font-weight:800; letter-spacing:1.8px; text-transform:uppercase;
+    color:var(--tertiary); margin-bottom:8px;
+  }
+  .sec-title{font-size:32px; font-weight:900; letter-spacing:-1px; margin-bottom:8px;}
+  .sec-lede{font-size:15px; color:var(--outline); max-width:640px; margin-bottom:24px; line-height:1.55}
+
+  .sub-title{font-size:18px; font-weight:800; letter-spacing:-.3px; margin:32px 0 12px; display:flex; align-items:center; gap:10px}
+  .sub-title::before{content:""; width:4px; height:18px; background:var(--tertiary); border-radius:2px}
+
+  /* ── Color token cards ──────────────────────────────────────────── */
+  .token-grid{display:grid; grid-template-columns:repeat(2,1fr); gap:14px}
+  @media (max-width:740px){ .token-grid{grid-template-columns:1fr} }
+
+  .token-pair{border-radius:10px; overflow:hidden; border:1px solid var(--outline-variant);}
+  .token-row{padding:14px 16px; display:flex; align-items:flex-end; justify-content:space-between; min-height:74px;}
+  .token-row .name{font-weight:700; font-size:13px}
+  .token-row .hex{font-family:'DM Mono',monospace; font-size:11px; opacity:.7; margin-top:2px}
+  .token-row .badge{
+    background:rgba(0,0,0,0.7); color:#fff; font-family:'DM Mono',monospace; font-size:9px; padding:3px 6px; border-radius:3px; letter-spacing:.5px;
+  }
+  .token-row[data-dark="1"] .badge{background:rgba(255,255,255,0.85); color:#000}
+
+  /* surface tier strip */
+  .surface-tier{display:grid; grid-template-columns:repeat(5,1fr); gap:0; border:1px solid var(--outline-variant); border-radius:10px; overflow:hidden;}
+  .surface-tier > div{padding:18px 14px; min-height:80px; display:flex; flex-direction:column; justify-content:space-between;}
+  .surface-tier .name{font-weight:600; font-size:11px}
+  .surface-tier .hex{font-family:'DM Mono',monospace; font-size:9px; opacity:.7; align-self:flex-end}
+  @media (max-width:740px){ .surface-tier{grid-template-columns:repeat(2,1fr)} }
+
+  /* utility strip — surface dim / surface / bright + on-surface + outlines */
+  .util-strip{display:grid; grid-template-columns:repeat(3,1fr); gap:14px}
+  @media (max-width:740px){ .util-strip{grid-template-columns:1fr} }
+
+  /* ── Component showcase ─────────────────────────────────────────── */
+  .panel{
+    background:var(--surface); border:1px solid var(--outline-variant); border-radius:12px; padding:22px;
+  }
+  .panel + .panel{margin-top:14px}
+  .panel-h{display:flex; align-items:center; justify-content:space-between; margin-bottom:14px; flex-wrap:wrap; gap:8px}
+  .panel-h .t{font-weight:800; font-size:14px}
+  .panel-h .desc{font-size:12px; color:var(--outline)}
+  .panel-row{display:flex; gap:10px; flex-wrap:wrap; align-items:center}
+  .panel-row + .panel-row{margin-top:14px}
+
+  /* Vuetify-like button */
+  .v-btn{
+    display:inline-flex; align-items:center; gap:8px; height:40px; padding:0 18px; border-radius:6px;
+    font-family:'DM Sans',sans-serif; font-weight:700; font-size:12px; text-transform:uppercase; letter-spacing:.05em;
+    cursor:pointer; transition:filter .15s, background .15s, border-color .15s; border:1px solid transparent;
+    color:var(--on-primary); background:var(--primary);
+  }
+  .v-btn:hover{filter:brightness(1.1)}
+  .v-btn--outlined{background:transparent; color:var(--primary); border-color:var(--outline);}
+  .v-btn--outlined:hover{background:var(--surface-container); filter:none}
+  .v-btn--text{background:transparent; color:var(--primary); padding:0 12px}
+  .v-btn--text:hover{background:var(--surface-container); filter:none}
+  .v-btn--secondary{background:var(--secondary); color:var(--on-secondary)}
+  .v-btn--tertiary{background:var(--tertiary); color:var(--on-tertiary)}
+  .v-btn--error{background:var(--error); color:var(--on-error)}
+  .v-btn--icon{width:40px; height:40px; padding:0; justify-content:center; border-radius:50%;}
+
+  /* Chips */
+  .v-chip{
+    display:inline-flex; align-items:center; gap:6px; height:26px; padding:0 11px; border-radius:13px;
+    font-size:11px; font-weight:600; letter-spacing:.2px;
+    background:color-mix(in srgb, var(--secondary) 18%, transparent); color:var(--secondary);
+  }
+  :root[data-theme="dark"] .v-chip{ background:color-mix(in srgb, var(--secondary) 22%, transparent); color:var(--secondary) }
+  .v-chip--primary{ background:color-mix(in srgb, var(--primary) 18%, transparent); color:var(--primary) }
+  .v-chip--tertiary{ background:color-mix(in srgb, var(--tertiary) 30%, transparent); color:var(--on-tertiary-container) }
+  .v-chip--error{ background:color-mix(in srgb, var(--error) 18%, transparent); color:var(--error) }
+  .v-chip--warning{ background:rgba(231,166,79,0.18); color:#a05f0c }
+  :root[data-theme="dark"] .v-chip--warning{ background:rgba(255,200,140,0.18); color:#ffc88c }
+
+  /* Inputs */
+  .v-input{display:flex; flex-direction:column; gap:6px; flex:1; min-width:200px}
+  .v-input label{font-size:11px; font-weight:700; color:var(--outline); text-transform:uppercase; letter-spacing:.5px}
+  .v-field{
+    display:flex; align-items:center; padding:0 14px; height:44px; border-radius:6px;
+    border:1px solid var(--outline-variant); background:var(--surface-container-lowest); color:var(--on-surface);
+    font-family:'DM Sans',sans-serif; font-size:14px;
+  }
+  .v-field:focus-within{border-color:var(--primary); outline:2px solid color-mix(in srgb, var(--primary) 22%, transparent); outline-offset:-1px;}
+  input.v-field{width:100%}
+
+  /* Card */
+  .v-card{
+    border-radius:10px; border:1px solid var(--outline-variant); background:var(--surface);
+    padding:22px; display:flex; flex-direction:column; gap:8px;
+  }
+  .v-card .title{font-size:15px; font-weight:800}
+  .v-card .sub{font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:1px; color:var(--outline)}
+  .v-card .body{font-size:13px; color:var(--outline); margin-top:4px}
+  .v-card .actions{display:flex; gap:8px; margin-top:10px}
+
+  /* Alert */
+  .v-alert{
+    display:flex; gap:12px; padding:14px 16px; border-radius:8px; font-size:13px;
+    background:color-mix(in srgb, var(--primary) 12%, transparent); color:var(--primary);
+  }
+  .v-alert--secondary{background:color-mix(in srgb, var(--secondary) 14%, transparent); color:var(--secondary)}
+  .v-alert--error{background:var(--error-container); color:var(--on-error-container)}
+  .v-alert--success{background:color-mix(in srgb, var(--tertiary) 25%, transparent); color:var(--on-tertiary-container)}
+  .v-alert .ic{font-size:18px; line-height:1; font-weight:900}
+
+  /* Type scale row */
+  .type-row{
+    display:grid; grid-template-columns:160px 1fr 100px; gap:18px; padding:14px 0;
+    border-bottom:1px solid var(--outline-variant); align-items:baseline;
+  }
+  .type-row:last-child{border-bottom:none}
+  .type-row .meta{font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:.7px; color:var(--outline)}
+  .type-row .spec{font-family:'DM Mono',monospace; font-size:10px; opacity:.6; text-align:right}
+
+  /* Radius scale */
+  .radius-grid{display:grid; grid-template-columns:repeat(5,1fr); gap:14px}
+  @media (max-width:740px){ .radius-grid{grid-template-columns:repeat(2,1fr)} }
+  .radius-cell{
+    aspect-ratio:1.4; background:var(--surface-container); border:1px solid var(--outline-variant);
+    display:flex; flex-direction:column; align-items:center; justify-content:center; gap:4px;
+    text-align:center;
+  }
+  .radius-cell .lbl{font-size:11px; font-weight:700}
+  .radius-cell .sz{font-family:'DM Mono',monospace; font-size:10px; opacity:.6}
+
+  /* Download config panel */
+  .download-wrap{
+    background:var(--surface); border:1px solid var(--outline-variant); border-radius:12px;
+    padding:0; overflow:hidden;
+  }
+  .download-head{
+    padding:18px 22px; display:flex; align-items:center; justify-content:space-between; gap:16px; flex-wrap:wrap;
+    border-bottom:1px solid var(--outline-variant);
+  }
+  .download-head .meta b{font-size:14px; font-weight:800}
+  .download-head .meta div{font-size:12px; color:var(--outline); margin-top:2px}
+  .download-actions{display:flex; gap:8px}
+  pre.code-block{
+    margin:0; padding:20px 22px; max-height:380px; overflow:auto;
+    font-family:'DM Mono',monospace; font-size:11px; line-height:1.6;
+    background:var(--surface-container-low); color:var(--on-surface);
+  }
+  .code-block .kw{color:var(--tertiary)}
+  .code-block .str{color:#8a6d3b}
+  :root[data-theme="dark"] .code-block .str{color:#e0c084}
+  .code-block .cm{color:var(--outline)}
+  .code-block .num{color:var(--secondary)}
+
+  /* Usage examples — dashboard mock */
+  .demo-app{
+    border-radius:12px; border:1px solid var(--outline-variant); overflow:hidden;
+    display:grid; grid-template-rows:auto 1fr; min-height:340px; background:var(--background);
+  }
+  .demo-bar{
+    display:flex; align-items:center; gap:14px; padding:12px 18px;
+    background:var(--surface); border-bottom:1px solid var(--outline-variant);
+  }
+  .demo-bar .tabs{display:flex; gap:4px; margin-left:14px}
+  .demo-bar .tab{padding:6px 12px; border-radius:5px; font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:.5px; color:var(--outline); cursor:pointer}
+  .demo-bar .tab.active{background:var(--primary-container); color:var(--on-primary-container)}
+  .demo-bar .grow{flex:1}
+  .demo-body{padding:20px; display:grid; grid-template-columns:repeat(3,1fr); gap:14px}
+  @media (max-width:780px){ .demo-body{grid-template-columns:1fr} }
+
+  .toast{
+    position:fixed; bottom:20px; right:20px; padding:10px 16px; border-radius:8px;
+    background:var(--primary); color:var(--on-primary); font-size:12px; font-weight:700;
+    box-shadow:0 8px 24px rgba(0,0,0,0.18); opacity:0; transform:translateY(8px); pointer-events:none;
+    transition:opacity .15s, transform .15s;
+  }
+  .toast.show{opacity:1; transform:translateY(0)}
+
+  hr.div{border:none; border-top:1px solid var(--outline-variant); margin:48px 0}
+</style>
+</head>
+<body>
+
+<!-- ── Top bar ─────────────────────────────────────────────────────── -->
+<div class="topbar">
+  <div class="brand">
+    <div class="brand-mark">
+      <svg viewBox="30 22 67.5 80" fill="none" style="width:100%; height:100%">
+        <rect x="30" y="56.5" width="7" height="15" rx="1.2" fill="#86dad3" opacity="0.55"/>
+        <rect x="41" y="49.5" width="7" height="21.5" rx="1.2" fill="#86dad3" opacity="0.85"/>
+        <text x="72" y="56" font-family="DM Sans, sans-serif" font-weight="900" font-size="62" fill="currentColor" text-anchor="middle" dominant-baseline="middle" letter-spacing="-3">io</text>
+        <line x1="30" y1="76" x2="97.5" y2="76" stroke="currentColor" stroke-opacity="0.35" stroke-width="1.2"/>
+        <text x="66.25" y="96" font-family="DM Sans, sans-serif" font-weight="900" font-size="20" fill="currentColor" text-anchor="middle" letter-spacing="5">LAB</text>
+      </svg>
+    </div>
+    <div class="brand-text">
+      <b>IoLab Design System</b>
+      <span>v1 · Vuetify 3 · Material 3 tokens</span>
+    </div>
+  </div>
+  <div class="topbar-actions">
+    <div class="theme-toggle" id="themeToggle" role="tablist">
+      <button data-theme="light" class="active">Light</button>
+      <button data-theme="dark">Dark</button>
+    </div>
+    <a class="v-btn is-nav" href="logo.html" style="height:36px; text-decoration:none">↗ Logo</a>
+    <button class="v-btn" id="dlConfigTop" style="height:36px">↓ Stiahnuť config</button>
+  </div>
+</div>
+
+<!-- ── Shell ───────────────────────────────────────────────────────── -->
+<div class="shell">
+  <aside class="sidebar">
+    <div class="nav-section">
+      <div class="nav-title">Základy</div>
+      <a href="#intro">Úvod</a>
+      <a href="#colors">Farebné tokeny</a>
+      <a href="#surfaces">Surface tiers</a>
+      <a href="#type">Typografia</a>
+      <a href="#radius">Tvary a rádiusy</a>
+    </div>
+    <div class="nav-section">
+      <div class="nav-title">Komponenty</div>
+      <a href="#buttons">Tlačidlá</a>
+      <a href="#inputs">Inputy a polia</a>
+      <a href="#chips">Chips a badges</a>
+      <a href="#cards">Karty</a>
+      <a href="#alerts">Alerty</a>
+      <a href="#demo">Ukážka v appke</a>
+    </div>
+    <div class="nav-section">
+      <div class="nav-title">Použitie</div>
+      <a href="#config">Stiahnuť config</a>
+    </div>
+  </aside>
+
+  <main class="content">
+
+    <!-- INTRO -->
+    <section id="intro">
+      <div class="sec-eyebrow">Design manual</div>
+      <h1 class="sec-title">Farby, komponenty, tokeny.</h1>
+      <p class="sec-lede">
+        Kompletný theming pre <b>Vuetify 3</b> v štýle Material 3 — primary navy, tertiary cyan podľa IoLab loga,
+        s plne mapovanými surface tiermi pre svetlý aj tmavý režim. Pripravený na nasadenie cez
+        <span class="mono" style="font-size:13px; background:var(--surface-container); padding:2px 6px; border-radius:4px;">plugins/vuetify.js</span>.
+      </p>
+
+      <div class="panel" style="display:grid; grid-template-columns:repeat(4,1fr); gap:16px;">
+        <div>
+          <div class="sec-eyebrow" style="color:var(--outline)">Primary</div>
+          <div style="display:flex; align-items:center; gap:10px; margin-top:6px;">
+            <div style="width:36px; height:36px; border-radius:6px; background:var(--primary); border:1px solid var(--outline-variant); flex-shrink:0;"></div>
+            <div style="display:flex; flex-direction:column; gap:2px; min-width:0;">
+              <div style="font-weight:800; font-size:13px">Navy ink</div>
+              <div class="mono" style="font-size:10px; color:var(--outline)" id="introPrimary">#1e2a4a</div>
+            </div>
+          </div>
+        </div>
+        <div>
+          <div class="sec-eyebrow" style="color:var(--outline)">Tertiary</div>
+          <div style="display:flex; align-items:center; gap:10px; margin-top:6px;">
+            <div style="width:36px; height:36px; border-radius:6px; background:var(--tertiary); flex-shrink:0;"></div>
+            <div style="display:flex; flex-direction:column; gap:2px; min-width:0;">
+              <div style="font-weight:800; font-size:13px">Cyan</div>
+              <div class="mono" style="font-size:10px; color:var(--outline)" id="introTertiary">#86dad3</div>
+            </div>
+          </div>
+        </div>
+        <div>
+          <div class="sec-eyebrow" style="color:var(--outline)">Secondary</div>
+          <div style="display:flex; align-items:center; gap:10px; margin-top:6px;">
+            <div style="width:36px; height:36px; border-radius:6px; background:var(--secondary); flex-shrink:0;"></div>
+            <div style="display:flex; flex-direction:column; gap:2px; min-width:0;">
+              <div style="font-weight:800; font-size:13px">Slate</div>
+              <div class="mono" style="font-size:10px; color:var(--outline)" id="introSecondary">#475569</div>
+            </div>
+          </div>
+        </div>
+        <div>
+          <div class="sec-eyebrow" style="color:var(--outline)">Font</div>
+          <div style="display:flex; align-items:center; gap:10px; margin-top:6px;">
+            <div style="width:36px; height:36px; border-radius:6px; background:var(--surface-container-highest); display:flex; align-items:center; justify-content:center; font-weight:900; font-size:18px; flex-shrink:0;">Aa</div>
+            <div style="display:flex; flex-direction:column; gap:2px; min-width:0;">
+              <div style="font-weight:800; font-size:13px">DM Sans</div>
+              <div class="mono" style="font-size:10px; color:var(--outline)">400 / 700 / 900</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- COLOR TOKENS -->
+    <section id="colors">
+      <div class="sec-eyebrow">01 · Tokeny</div>
+      <h2 class="sec-title">Farebný systém</h2>
+      <p class="sec-lede">
+        Material 3 token model — každá rola má <b>main</b>, <b>on-main</b> (kontrastný foreground)
+        a <b>container</b> verziu. Tokeny sa adaptujú na light aj dark theme.
+      </p>
+
+      <h3 class="sub-title">Role: Primary / Secondary / Tertiary / Error</h3>
+      <div class="token-grid" id="roleGrid"></div>
+
+      <h3 class="sub-title">Outline & on-surface</h3>
+      <div class="util-strip" id="outlineGrid"></div>
+    </section>
+
+    <!-- SURFACES -->
+    <section id="surfaces">
+      <div class="sec-eyebrow">02 · Surfaces</div>
+      <h2 class="sec-title">Surface tiers</h2>
+      <p class="sec-lede">
+        Hierarchia plôch — od najnižšej (background) po najvyššiu (highest).
+        Používaj pre vrstvenie: page → cards → dialogs → menus.
+      </p>
+
+      <div class="surface-tier" id="surfaceTier"></div>
+
+      <h3 class="sub-title">Background · Surface · Bright</h3>
+      <div class="util-strip" id="surfaceTriad"></div>
+    </section>
+
+    <!-- TYPE -->
+    <section id="type">
+      <div class="sec-eyebrow">03 · Typografia</div>
+      <h2 class="sec-title">DM Sans</h2>
+      <p class="sec-lede">Variable font, opsz auto. Pre uppercase labels používame letter-spacing 0.05–0.15em.</p>
+
+      <div class="panel">
+        <div class="type-row">
+          <div class="meta">Display</div>
+          <div style="font-size:48px; font-weight:900; letter-spacing:-1.2px; line-height:1.05">Hello, IoLab.</div>
+          <div class="spec">48px / 900</div>
+        </div>
+        <div class="type-row">
+          <div class="meta">Headline</div>
+          <div style="font-size:32px; font-weight:900; letter-spacing:-.8px;">Section title</div>
+          <div class="spec">32px / 900</div>
+        </div>
+        <div class="type-row">
+          <div class="meta">Title</div>
+          <div style="font-size:20px; font-weight:800; letter-spacing:-.3px;">Card title</div>
+          <div class="spec">20px / 800</div>
+        </div>
+        <div class="type-row">
+          <div class="meta">Body Large</div>
+          <div style="font-size:15px; font-weight:500;">Body copy at comfortable reading size.</div>
+          <div class="spec">15px / 500</div>
+        </div>
+        <div class="type-row">
+          <div class="meta">Body</div>
+          <div style="font-size:13px; font-weight:400;">Default body — descriptions, helper text, list rows.</div>
+          <div class="spec">13px / 400</div>
+        </div>
+        <div class="type-row">
+          <div class="meta">Caption / Label</div>
+          <div style="font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:1.5px; color:var(--outline)">Eyebrow · Tab · Chip</div>
+          <div class="spec">11px / 700 / 1.5px</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- RADIUS -->
+    <section id="radius">
+      <div class="sec-eyebrow">04 · Tvary</div>
+      <h2 class="sec-title">Rádiusy</h2>
+      <p class="sec-lede">
+        Vuetify <span class="mono" style="font-size:13px">rounded</span> tokeny — od ostrých rohov po pill.
+        Default global = <b>lg (8px)</b>, tlačidlá <b>md (6px)</b>, pill pre chips.
+      </p>
+
+      <div class="radius-grid">
+        <div class="radius-cell" style="border-radius:0">
+          <div class="lbl">none</div><div class="sz">0px</div>
+        </div>
+        <div class="radius-cell" style="border-radius:4px">
+          <div class="lbl">sm</div><div class="sz">4px</div>
+        </div>
+        <div class="radius-cell" style="border-radius:6px">
+          <div class="lbl">md</div><div class="sz">6px</div>
+        </div>
+        <div class="radius-cell" style="border-radius:8px; border-width:2px; border-color:var(--primary);">
+          <div class="lbl">lg · default</div><div class="sz">8px</div>
+        </div>
+        <div class="radius-cell" style="border-radius:999px">
+          <div class="lbl">pill</div><div class="sz">∞</div>
+        </div>
+      </div>
+    </section>
+
+    <hr class="div">
+
+    <!-- BUTTONS -->
+    <section id="buttons">
+      <div class="sec-eyebrow">05 · Komponenty</div>
+      <h2 class="sec-title">Tlačidlá</h2>
+      <p class="sec-lede">Default = primary filled. Outlined a text varianty pre sekundárne / terciárne akcie.</p>
+
+      <div class="panel">
+        <div class="panel-h">
+          <div class="t">Varianty</div>
+          <div class="desc">VBtn · primary fill default · uppercase bold</div>
+        </div>
+        <div class="panel-row">
+          <button class="v-btn">Primary</button>
+          <button class="v-btn v-btn--outlined">Outlined</button>
+          <button class="v-btn v-btn--text">Text only</button>
+          <button class="v-btn v-btn--secondary">Secondary</button>
+          <button class="v-btn v-btn--tertiary">Tertiary</button>
+          <button class="v-btn v-btn--error">Delete</button>
+          <button class="v-btn v-btn--icon" aria-label="Settings">⚙</button>
+        </div>
+      </div>
+
+      <div class="panel">
+        <div class="panel-h">
+          <div class="t">Praktické dvojice</div>
+          <div class="desc">Primárna akcia + Cancel · Confirm + Outlined sekundár</div>
+        </div>
+        <div class="panel-row">
+          <button class="v-btn">Uložiť zmeny</button>
+          <button class="v-btn v-btn--text">Zrušiť</button>
+        </div>
+        <div class="panel-row">
+          <button class="v-btn">Pridať experiment</button>
+          <button class="v-btn v-btn--outlined">Importovať</button>
+        </div>
+        <div class="panel-row">
+          <button class="v-btn v-btn--error">Vymazať lab</button>
+          <button class="v-btn v-btn--text">Späť</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- INPUTS -->
+    <section id="inputs">
+      <h2 class="sec-title">Formuláre</h2>
+      <p class="sec-lede">VTextField a všetky príbuzné — outlined, comfortable density, rounded md.</p>
+
+      <div class="panel">
+        <div class="panel-h">
+          <div class="t">Textové polia</div>
+          <div class="desc">VTextField · VSelect · VTextarea</div>
+        </div>
+        <div class="panel-row" style="align-items:flex-start; gap:18px">
+          <div class="v-input">
+            <label>Názov experimentu</label>
+            <input class="v-field" type="text" value="Kalman filter — krok 3" />
+          </div>
+          <div class="v-input">
+            <label>Kategória</label>
+            <input class="v-field" type="text" value="Riadenie · MIMO" />
+          </div>
+          <div class="v-input">
+            <label>Trvanie (min)</label>
+            <input class="v-field" type="text" value="45" />
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CHIPS -->
+    <section id="chips">
+      <h2 class="sec-title">Chips a stavy</h2>
+      <p class="sec-lede">VChip · tonal, small. Pre štítky, filtre, status badges.</p>
+      <div class="panel">
+        <div class="panel-row">
+          <span class="v-chip v-chip--primary">Primary</span>
+          <span class="v-chip">Secondary</span>
+          <span class="v-chip v-chip--tertiary">Tertiary</span>
+          <span class="v-chip v-chip--warning">Warning</span>
+          <span class="v-chip v-chip--error">Error</span>
+        </div>
+        <div class="panel-row">
+          <span class="v-chip v-chip--tertiary">● Online</span>
+          <span class="v-chip v-chip--warning">⏱ Čaká</span>
+          <span class="v-chip v-chip--error">! Chyba</span>
+          <span class="v-chip">Draft</span>
+          <span class="v-chip v-chip--primary">FEI STU</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- CARDS -->
+    <section id="cards">
+      <h2 class="sec-title">Karty</h2>
+      <p class="sec-lede">VCard · elevation 0, border 1px outline-variant.</p>
+      <div class="panel" style="background:var(--background); border:none; padding:0">
+        <div style="display:grid; grid-template-columns:repeat(3,1fr); gap:14px">
+          <div class="v-card">
+            <div class="sub">01 · Riadenie</div>
+            <div class="title">Inverzné kyvadlo</div>
+            <div class="body">Klasický experiment stabilizácie — LQR vs MPC porovnanie.</div>
+            <div class="actions">
+              <button class="v-btn" style="height:32px; font-size:11px">Spustiť</button>
+              <button class="v-btn v-btn--text" style="height:32px; font-size:11px">Detail</button>
+            </div>
+          </div>
+          <div class="v-card">
+            <div class="sub">02 · Robotika</div>
+            <div class="title">SCARA manipulátor</div>
+            <div class="body">Pick &amp; place s vizuálnym feedbackom z kamerového modulu.</div>
+            <div class="actions">
+              <button class="v-btn" style="height:32px; font-size:11px">Spustiť</button>
+              <button class="v-btn v-btn--text" style="height:32px; font-size:11px">Detail</button>
+            </div>
+          </div>
+          <div class="v-card">
+            <div class="sub">03 · Spracovanie signálov</div>
+            <div class="title">FFT spektrálna analýza</div>
+            <div class="body">Interaktívna ukážka okenných funkcií a leakage efektu.</div>
+            <div class="actions">
+              <button class="v-btn" style="height:32px; font-size:11px">Spustiť</button>
+              <button class="v-btn v-btn--text" style="height:32px; font-size:11px">Detail</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ALERTS -->
+    <section id="alerts">
+      <h2 class="sec-title">Alerty &amp; feedback</h2>
+      <p class="sec-lede">VAlert · tonal, density compact.</p>
+      <div class="panel">
+        <div class="v-alert">
+          <span class="ic">i</span>
+          <div><b>Info.</b> Experiment beží v sandboxe — limity sú 60 s a 256 MB RAM.</div>
+        </div>
+        <div style="height:10px"></div>
+        <div class="v-alert v-alert--success">
+          <span class="ic">✓</span>
+          <div><b>Úspech.</b> Konfigurácia uložená a synchronizovaná do oblaku.</div>
+        </div>
+        <div style="height:10px"></div>
+        <div class="v-alert v-alert--secondary">
+          <span class="ic">▲</span>
+          <div><b>Upozornenie.</b> Tento dataset je verejný — pri publikovaní zvážte anonymizáciu.</div>
+        </div>
+        <div style="height:10px"></div>
+        <div class="v-alert v-alert--error">
+          <span class="ic">!</span>
+          <div><b>Chyba.</b> Pripojenie k labu prerušené. Skontroluj sieť alebo skús znova.</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- DEMO APP -->
+    <section id="demo">
+      <h2 class="sec-title">Ukážka v appke</h2>
+      <p class="sec-lede">Mini-mockup typickej obrazovky — chrome, karty, akcie.</p>
+
+      <div class="demo-app">
+        <div class="demo-bar">
+          <div class="brand-mark" style="width:30px; height:30px; padding:3px; background:transparent;">
+            <svg viewBox="30 22 67.5 80" fill="none" style="width:100%; height:100%">
+              <rect x="30" y="56.5" width="7" height="15" rx="1.2" fill="var(--tertiary)" opacity="0.55"/>
+              <rect x="41" y="49.5" width="7" height="21.5" rx="1.2" fill="var(--tertiary)" opacity="0.85"/>
+              <text x="72" y="56" font-family="DM Sans" font-weight="900" font-size="62" fill="currentColor" text-anchor="middle" dominant-baseline="middle" letter-spacing="-3">io</text>
+              <line x1="30" y1="76" x2="97.5" y2="76" stroke="currentColor" stroke-opacity="0.35" stroke-width="1.2"/>
+              <text x="66.25" y="96" font-family="DM Sans" font-weight="900" font-size="20" fill="currentColor" text-anchor="middle" letter-spacing="5">LAB</text>
+            </svg>
+          </div>
+          <div class="tabs">
+            <div class="tab active">Aktivity</div>
+            <div class="tab">Tím</div>
+            <div class="tab">Publikácie</div>
+          </div>
+          <div class="grow"></div>
+          <span class="v-chip v-chip--tertiary">● lab online</span>
+          <button class="v-btn" style="height:32px; font-size:11px">Spustiť</button>
+        </div>
+        <div class="demo-body">
+          <div class="v-card">
+            <div class="sub">aktívne</div>
+            <div class="title">12 experimentov</div>
+            <div class="body">Beží práve 3 sesie · 2 v queue</div>
+          </div>
+          <div class="v-card">
+            <div class="sub">tento týždeň</div>
+            <div class="title">+24 študentov</div>
+            <div class="body">FEI STU · prístup cez SSO</div>
+          </div>
+          <div class="v-card" style="background:var(--primary); color:var(--on-primary); border-color:var(--primary)">
+            <div class="sub" style="color:var(--on-primary); opacity:.6">upcoming</div>
+            <div class="title" style="color:var(--on-primary)">Workshop · MPC</div>
+            <div class="body" style="color:var(--on-primary); opacity:.7">Štvrtok 14:00 · D-103</div>
+            <div class="actions">
+              <button class="v-btn" style="height:30px; font-size:10px; background:var(--on-primary); color:var(--primary)">Zaregistrovať</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <hr class="div">
+
+    <!-- CONFIG DOWNLOAD -->
+    <section id="config">
+      <div class="sec-eyebrow">06 · Použitie</div>
+      <h2 class="sec-title">Vuetify config</h2>
+      <p class="sec-lede">
+        Hotový theme + defaults — paste do <span class="mono" style="font-size:13px; background:var(--surface-container); padding:2px 6px; border-radius:4px;">plugins/vuetify.js</span>
+        a registruj cez <span class="mono" style="font-size:13px; background:var(--surface-container); padding:2px 6px; border-radius:4px;">app.use(vuetify)</span>.
+      </p>
+
+      <div class="download-wrap">
+        <div class="download-head">
+          <div class="meta">
+            <b>plugins/vuetify.js</b>
+            <div>Light + dark theme · defaults pre VBtn, VCard, VTextField a všetky bežné komponenty.</div>
+          </div>
+          <div class="download-actions">
+            <button class="v-btn v-btn--outlined" id="copyConfig" style="height:36px">Kopírovať</button>
+            <button class="v-btn" id="dlConfig" style="height:36px">↓ Stiahnuť .js</button>
+          </div>
+        </div>
+        <pre class="code-block" id="codeBlock"></pre>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<div class="toast" id="toast">Skopírované</div>
+
+<script>
+// ─────────────────────────────────────────────────────────────────────
+// THEME
+// ─────────────────────────────────────────────────────────────────────
+const root = document.documentElement;
+function setTheme(t){
+  root.setAttribute('data-theme', t);
+  document.querySelectorAll('#themeToggle button').forEach(b => b.classList.toggle('active', b.dataset.theme === t));
+  try { localStorage.setItem('iolab.ds.theme', t) } catch(e){}
+  renderTokens();
+}
+document.getElementById('themeToggle').addEventListener('click', e => {
+  const b = e.target.closest('button[data-theme]'); if(!b) return; setTheme(b.dataset.theme);
+});
+
+// ─────────────────────────────────────────────────────────────────────
+// TOKEN DATA
+// ─────────────────────────────────────────────────────────────────────
+const TOKENS = {
+  light: {
+    background:'#efeeeb', surface:'#faf9f6',
+    'surface-dim':'#dbdad7', 'surface-bright':'#faf9f6',
+    'surface-container-lowest':'#ffffff',
+    'surface-container-low':'#f4f3f1',
+    'surface-container':'#efeeeb',
+    'surface-container-high':'#e9e8e5',
+    'surface-container-highest':'#e3e2e0',
+    'on-surface':'#131b2f',
+    outline:'#76777d', 'outline-variant':'#c6c6cc',
+    primary:'#1e2a4a', 'on-primary':'#ffffff',
+    'primary-container':'#dae2fd', 'on-primary-container':'#131b2f',
+    secondary:'#475569', 'on-secondary':'#ffffff',
+    'secondary-container':'#cee6f7', 'on-secondary-container':'#061e2a',
+    tertiary:'#86dad3', 'on-tertiary':'#1e2a4a',
+    'tertiary-container':'#e8defc', 'on-tertiary-container':'#1e182d',
+    error:'#ba1a1a', 'on-error':'#ffffff',
+    'error-container':'#ffdad6', 'on-error-container':'#410002',
+    warning:'#a05f0c', 'on-warning':'#ffffff',
+    'warning-container':'#ffe0b8', 'on-warning-container':'#2b1700',
+    info:'#3b6bd0', 'on-info':'#ffffff',
+    'info-container':'#dde7ff', 'on-info-container':'#001a40',
+    success:'#3fa888', 'on-success':'#ffffff',
+    'success-container':'#bff1de', 'on-success-container':'#002117',
+  },
+  dark: {
+    background:'#171f33', surface:'#0a1326',
+    'surface-dim':'#0a1326', 'surface-bright':'#31394e',
+    'surface-container-lowest':'#050d21',
+    'surface-container-low':'#131b2f',
+    'surface-container':'#171f33',
+    'surface-container-high':'#222a3e',
+    'surface-container-highest':'#2c3449',
+    'on-surface':'#fefefe',
+    outline:'#909096', 'outline-variant':'#45474c',
+    primary:'#fefefe', 'on-primary':'#283045',
+    'primary-container':'#3e465c', 'on-primary-container':'#dae2fd',
+    secondary:'#dae2fd', 'on-secondary':'#1d3340',
+    'secondary-container':'#344957', 'on-secondary-container':'#cee6f7',
+    tertiary:'#8fe3dc', 'on-tertiary':'#332d43',
+    'tertiary-container':'#4a435b', 'on-tertiary-container':'#e8defc',
+    error:'#ffb4ab', 'on-error':'#690005',
+    'error-container':'#93000a', 'on-error-container':'#ffb4ab',
+    warning:'#ffc88c', 'on-warning':'#3d2900',
+    'warning-container':'#5c3f00', 'on-warning-container':'#ffe0b8',
+    info:'#b0c6ff', 'on-info':'#00255a',
+    'info-container':'#013884', 'on-info-container':'#dde7ff',
+    success:'#82d4b7', 'on-success':'#003828',
+    'success-container':'#005138', 'on-success-container':'#bff1de',
+  },
+};
+
+// ─────────────────────────────────────────────────────────────────────
+// Contrast util — for badge (AAA / AA / —)
+// ─────────────────────────────────────────────────────────────────────
+function hexL(h){
+  h = h.replace('#','');
+  if (h.length === 3) h = h.split('').map(c => c+c).join('');
+  const r = parseInt(h.slice(0,2),16)/255;
+  const g = parseInt(h.slice(2,4),16)/255;
+  const b = parseInt(h.slice(4,6),16)/255;
+  const lin = c => c <= 0.03928 ? c/12.92 : Math.pow((c+0.055)/1.055, 2.4);
+  return 0.2126*lin(r) + 0.7152*lin(g) + 0.0722*lin(b);
+}
+function contrast(a,b){
+  const la=hexL(a), lb=hexL(b);
+  const [hi,lo] = la>lb ? [la,lb] : [lb,la];
+  return (hi+0.05)/(lo+0.05);
+}
+function rate(a,b){
+  const c = contrast(a,b);
+  if (c >= 7) return 'AAA';
+  if (c >= 4.5) return 'AA';
+  if (c >= 3) return 'AA-L';
+  return '—';
+}
+
+// ─────────────────────────────────────────────────────────────────────
+// RENDER token grids
+// ─────────────────────────────────────────────────────────────────────
+function tokenCell({ bg, fg, name, hex, isDark }){
+  return `<div class="token-row" style="background:${bg}; color:${fg};" ${isDark ? 'data-dark="1"' : ''}>
+    <div>
+      <div class="name">${name}</div>
+      <div class="hex">${hex.toUpperCase()}</div>
+    </div>
+    <div class="badge">${rate(bg, fg)}</div>
+  </div>`;
+}
+
+function roleBlock(t, kind){
+  const isDark = root.getAttribute('data-theme') === 'dark';
+  const main = t[kind];
+  const on = t[`on-${kind}`];
+  const cont = t[`${kind}-container`];
+  const onCont = t[`on-${kind}-container`];
+  // determine "is bg dark" per row for badge text
+  const bDark = b => hexL(b) < 0.5;
+  return `<div class="token-pair">
+    ${tokenCell({ bg:main, fg:on, name:cap(kind), hex:main, isDark:bDark(main) })}
+    ${tokenCell({ bg:on, fg:main, name:'On ' + cap(kind), hex:on, isDark:bDark(on) })}
+    ${tokenCell({ bg:cont, fg:onCont, name:cap(kind) + ' Container', hex:cont, isDark:bDark(cont) })}
+    ${tokenCell({ bg:onCont, fg:cont, name:'On ' + cap(kind) + ' Container', hex:onCont, isDark:bDark(onCont) })}
+  </div>`;
+}
+function cap(s){ return s.split('-').map(p => p[0].toUpperCase()+p.slice(1)).join(' '); }
+
+function renderTokens(){
+  const theme = root.getAttribute('data-theme');
+  const t = TOKENS[theme];
+
+  // Intro hex labels
+  document.getElementById('introPrimary').textContent = t.primary.toUpperCase();
+  document.getElementById('introTertiary').textContent = t.tertiary.toUpperCase();
+  document.getElementById('introSecondary').textContent = t.secondary.toUpperCase();
+
+  // Role grid
+  document.getElementById('roleGrid').innerHTML =
+    ['primary','secondary','tertiary','error','warning','info','success'].map(k => roleBlock(t, k)).join('');
+
+  // Outline + on-surface util
+  const bDark = b => hexL(b) < 0.5;
+  document.getElementById('outlineGrid').innerHTML = `
+    <div class="token-pair">
+      ${tokenCell({ bg:t['on-surface'], fg:t.surface, name:'On Surface', hex:t['on-surface'], isDark:bDark(t['on-surface']) })}
+    </div>
+    <div class="token-pair">
+      ${tokenCell({ bg:t.outline, fg:t.surface, name:'Outline', hex:t.outline, isDark:bDark(t.outline) })}
+    </div>
+    <div class="token-pair">
+      ${tokenCell({ bg:t['outline-variant'], fg:t['on-surface'], name:'Outline Variant', hex:t['outline-variant'], isDark:bDark(t['outline-variant']) })}
+    </div>
+  `;
+
+  // Surface tier (5 stops)
+  const tiers = [
+    ['Container Lowest','surface-container-lowest'],
+    ['Container Low','surface-container-low'],
+    ['Container','surface-container'],
+    ['Container High','surface-container-high'],
+    ['Container Highest','surface-container-highest'],
+  ];
+  document.getElementById('surfaceTier').innerHTML = tiers.map(([name, k]) => {
+    const bg = t[k];
+    const fg = t['on-surface'];
+    return `<div style="background:${bg}; color:${fg};">
+      <div class="name">${name}</div>
+      <div class="hex">${bg.toUpperCase()}</div>
+    </div>`;
+  }).join('');
+
+  // Surface triad
+  const triad = [
+    ['Surface Dim','surface-dim'],
+    ['Surface','surface'],
+    ['Surface Bright','surface-bright'],
+  ];
+  document.getElementById('surfaceTriad').innerHTML = triad.map(([name, k]) => {
+    const bg = t[k];
+    const fg = t['on-surface'];
+    return `<div class="token-pair">
+      ${tokenCell({ bg, fg, name, hex:bg, isDark:bDark(bg) })}
+    </div>`;
+  }).join('');
+}
+
+// ─────────────────────────────────────────────────────────────────────
+// CONFIG SOURCE — full Vuetify config (from user's paste, normalized)
+// ─────────────────────────────────────────────────────────────────────
+const CONFIG = `import 'vuetify/styles';
+import '@mdi/font/css/materialdesignicons.css';
+import { createVuetify } from 'vuetify';
+import { VNumberInput } from 'vuetify/components';
+import { createVueI18nAdapter } from 'vuetify/locale/adapters/vue-i18n';
+import { useI18n } from 'vue-i18n';
+import i18n from './i18n';
+
+  // ── Theme tokens ─────────────────────────────────────────────────────────
+  // on-tertiary upravený na navy (#1e2a4a) — cyan #86dad3 + biela = AA fail.
+  // Navy na cyan = kontrast >7:1 (AAA).
+
+const light = {
+  dark: false,
+  colors: {
+    background: '#efeeeb',
+    surface: '#faf9f6',
+    'surface-dim': '#dbdad7',
+    'surface-bright': '#faf9f6',
+    'surface-container-lowest': '#ffffff',
+    'surface-container-low': '#f4f3f1',
+    'surface-container': '#efeeeb',
+    'surface-container-high': '#e9e8e5',
+    'surface-container-highest': '#e3e2e0',
+    'on-surface': '#131b2f',
+    outline: '#76777d',
+    'outline-variant': '#c6c6cc',
+    primary: '#1e2a4a',
+    'on-primary': '#ffffff',
+    'primary-container': '#dae2fd',
+    'on-primary-container': '#131b2f',
+    secondary: '#475569',
+    'on-secondary': '#ffffff',
+    'secondary-container': '#cee6f7',
+    'on-secondary-container': '#061e2a',
+    tertiary: '#86dad3',
+    'on-tertiary': '#1e2a4a',
+    'tertiary-container': '#e8defc',
+    'on-tertiary-container': '#1e182d',
+    error: '#ba1a1a',
+    'on-error': '#ffffff',
+    'error-container': '#ffdad6',
+    'on-error-container': '#410002',
+    'primary-fixed': '#dae2fd',
+    'primary-fixed-dim': '#bec6e0',
+    'on-primary-fixed': '#131b2f',
+    'on-primary-fixed-variant': '#3e465c',
+    'secondary-fixed': '#cee6f7',
+    'secondary-fixed-dim': '#b3cada',
+    'on-secondary-fixed': '#061e2a',
+    'on-secondary-fixed-variant': '#344957',
+    'tertiary-fixed': '#e8defc',
+    'tertiary-fixed-dim': '#ccc2df',
+    'on-tertiary-fixed': '#1e182d',
+    'on-tertiary-fixed-variant': '#4a435b',
+    'surface-light': '#e9e8e5',
+  },
+};
+
+const dark = {
+  dark: true,
+  colors: {
+    background: '#171f33',
+    surface: '#0a1326',
+    'surface-dim': '#0a1326',
+    'surface-bright': '#31394e',
+    'surface-container-lowest': '#050d21',
+    'surface-container-low': '#131b2f',
+    'surface-container': '#171f33',
+    'surface-container-high': '#222a3e',
+    'surface-container-highest': '#2c3449',
+    'on-surface': '#fefefe',
+    outline: '#909096',
+    'outline-variant': '#45474c',
+    primary: '#fefefe',
+    'on-primary': '#283045',
+    'primary-container': '#3e465c',
+    'on-primary-container': '#dae2fd',
+    secondary: '#dae2fd',
+    'on-secondary': '#1d3340',
+    'secondary-container': '#344957',
+    'on-secondary-container': '#cee6f7',
+    tertiary: '#8fe3dc',
+    'on-tertiary': '#332d43',
+    'tertiary-container': '#4a435b',
+    'on-tertiary-container': '#e8defc',
+    error: '#ffb4ab',
+    'on-error': '#690005',
+    'error-container': '#93000a',
+    'on-error-container': '#ffb4ab',
+    'primary-fixed': '#dae2fd',
+    'primary-fixed-dim': '#bec6e0',
+    'on-primary-fixed': '#131b2f',
+    'on-primary-fixed-variant': '#3e465c',
+    'secondary-fixed': '#cee6f7',
+    'secondary-fixed-dim': '#b3cada',
+    'on-secondary-fixed': '#061e2a',
+    'on-secondary-fixed-variant': '#344957',
+    'tertiary-fixed': '#e8defc',
+    'tertiary-fixed-dim': '#ccc2df',
+    'on-tertiary-fixed': '#1e182d',
+    'on-tertiary-fixed-variant': '#4a435b',
+    'surface-light': '#31394e',
+  },
+};
+
+export default createVuetify({
+  components: { VNumberInput },
+  locale: {
+    adapter: createVueI18nAdapter({ i18n, useI18n }),
+  },
+  theme: {
+    defaultTheme: 'light',
+    themes: { light, dark },
+  },
+  display: {
+    mobileBreakpoint: 'lg', // screens < 1280 px are "mobile"
+  },
+  defaults: {
+    // Global: rounded "lg" (~8 px) + DM Sans font na všetkom čo ho zdedí.
+    global: {
+      rounded: 'lg',
+      style: "font-family: 'DM Sans', system-ui, sans-serif;",
+    },
+
+    // VApp aplikuje font na ROOT — dialogy / menu / overlays mimo <main> ho chytia tiež.
+    VApp: { style: "font-family: 'DM Sans', system-ui, sans-serif;" },
+
+    // ── Layout ────────────────────────────────────────────────────────────
+    VCard: { elevation: 0, border: true },
+    VCardTitle: { class: 'text-body-large font-weight-bold' },
+    VCardSubtitle: {
+      class: 'text-caption text-uppercase text-medium-emphasis',
+    },
+    VDivider: {},
+    VDialog: {},
+    VSheet: { border: true },
+
+    // ── Inputs ────────────────────────────────────────────────────────────
+    VTextField: { variant: 'outlined', density: 'comfortable', rounded: 'md' },
+    VSelect: { variant: 'outlined', density: 'comfortable', rounded: 'md' },
+    VTextarea: { variant: 'outlined', rounded: 'md' },
+    VNumberInput: { variant: 'outlined', density: 'comfortable', rounded: 'md' },
+    VAutocomplete: { variant: 'outlined', density: 'comfortable', rounded: 'md' },
+    VFileInput: { variant: 'outlined', density: 'comfortable', rounded: 'md' },
+    VCombobox: { variant: 'outlined', density: 'comfortable', rounded: 'md' },
+
+    // ── Buttons ───────────────────────────────────────────────────────────
+    // Default = filled PRIMARY (navy). Bold + uppercase per mockup.
+    VBtn: {
+      variant: 'flat',
+      color: 'primary',
+      size: 'default',
+      density: 'default',
+      rounded: 'md',
+      class: 'font-weight-bold text-uppercase text-caption',
+      style: 'letter-spacing: 0.05em;',
+      VProgressCircular: { color: undefined, style: 'color: currentColor;' },
+    },
+
+    // ── Chips ─────────────────────────────────────────────────────────────
+    // Pill rounded — IoLab štýl. Default farba secondary (slate); per-call
+    // override cez color="primary|tertiary|warning|error".
+    VChip: { variant: 'tonal', size: 'small', color: 'secondary', rounded: 'pill' },
+
+    // ── Avatars / Feedback ────────────────────────────────────────────────
+    VAvatar: { color: 'primary' },
+    VAlert: { variant: 'tonal', density: 'compact' },
+    VProgressLinear: { color: 'primary' },
+    VProgressCircular: { color: 'primary' },
+    VSnackbar: {},
+    VBadge: {},
+    VTooltip: { color: 'primary', contentClass: 'text-on-primary' },
+
+    // ── Navigation & lists (no global rounding on chrome) ─────────────────
+    VAppBar: { rounded: 0 },
+    VNavigationDrawer: { rounded: 0 },
+    VMain: { rounded: 0 },
+    VFooter: { rounded: 0 },
+    VToolbar: { rounded: 0 },
+    VImg: { rounded: 0 },
+    VList: { density: 'compact', rounded: 0 },
+    VListItem: {},
+    VTabs: { color: 'secondary', rounded: 0 },
+    VTab: { class: 'font-weight-bold text-uppercase', rounded: 0 },
+
+    // ── Expansion panels ──────────────────────────────────────────────────
+    VExpansionPanels: { elevation: 0 },
+    VExpansionPanel: { elevation: 0 },
+
+    // ── Toggles ───────────────────────────────────────────────────────────
+    VSwitch: { color: 'secondary', density: 'comfortable', inset: true },
+    VCheckbox: { color: 'secondary', density: 'comfortable' },
+    VRadioGroup: { color: 'secondary' },
+    VSlider: { color: 'secondary', trackColor: 'surface-variant' },
+
+    // ── Tables (stack below lg) ───────────────────────────────────────────
+    VDataTable: { mobileBreakpoint: 'lg' },
+  },
+});
+`;
+
+// Syntax-highlight the config block
+function highlight(src){
+  let s = src
+    .replace(/&/g,'&amp;')
+    .replace(/</g,'&lt;')
+    .replace(/>/g,'&gt;');
+  // strings
+  s = s.replace(/('[^'\n]*'|"[^"\n]*")/g, '<span class="str">$1</span>');
+  // line comments
+  s = s.replace(/(\/\/[^\n]*)/g, '<span class="cm">$1</span>');
+  // keywords
+  s = s.replace(/\b(import|from|export|default|const|let|var|true|false|null|return|new)\b/g, '<span class="kw">$1</span>');
+  // numbers
+  s = s.replace(/\b(\d+)\b/g, '<span class="num">$1</span>');
+  return s;
+}
+document.getElementById('codeBlock').innerHTML = highlight(CONFIG);
+
+// ─────────────────────────────────────────────────────────────────────
+// DOWNLOAD / COPY
+// ─────────────────────────────────────────────────────────────────────
+function toast(msg){
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  clearTimeout(toast._t);
+  toast._t = setTimeout(() => t.classList.remove('show'), 1400);
+}
+function downloadConfig(){
+  const blob = new Blob([CONFIG], { type:'application/javascript;charset=utf-8' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url; a.download = 'vuetify.js';
+  document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(() => URL.revokeObjectURL(url), 1000);
+  toast('Stiahnuté vuetify.js');
+}
+document.getElementById('dlConfig').addEventListener('click', downloadConfig);
+document.getElementById('dlConfigTop').addEventListener('click', downloadConfig);
+document.getElementById('copyConfig').addEventListener('click', async () => {
+  try { await navigator.clipboard.writeText(CONFIG); toast('Skopírované do schránky'); }
+  catch(e){ toast('Kopírovanie zlyhalo'); }
+});
+
+// ─────────────────────────────────────────────────────────────────────
+// Sidebar — active link
+// ─────────────────────────────────────────────────────────────────────
+const navLinks = document.querySelectorAll('.sidebar a');
+function syncActive(){
+  let active = null;
+  document.querySelectorAll('section[id]').forEach(s => {
+    const r = s.getBoundingClientRect();
+    if (r.top < 200) active = s.id;
+  });
+  navLinks.forEach(a => a.classList.toggle('is-active', a.getAttribute('href') === '#' + active));
+}
+window.addEventListener('scroll', syncActive, { passive:true });
+syncActive();
+
+// Initial paint — TOKENS is now defined, safe to apply theme
+setTheme(localStorage.getItem('iolab.ds.theme') || 'light');
+</script>
+</body>
+</html>
