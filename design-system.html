@@ -4,6 +4,15 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>IoLab — Design System</title>
+<script>
+  const APP_VERSION = '1.0.1';
+  (function(){
+    const k = 'iolab_v';
+    const prev = localStorage.getItem(k);
+    localStorage.setItem(k, APP_VERSION);
+    if (prev && prev !== APP_VERSION) location.reload(true);
+  })();
+</script>
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800;9..40,900&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
   *{margin:0;padding:0;box-sizing:border-box}
@@ -87,6 +96,7 @@
   .brand-text{display:flex; flex-direction:column; line-height:1.1}
   .brand-text b{font-size:14px; font-weight:900; letter-spacing:-.2px}
   .brand-text span{font-size:10px; font-weight:700; letter-spacing:1.4px; color:var(--outline); text-transform:uppercase; margin-top:2px}
+  .version-badge{display:inline-block; background:var(--tertiary,#86dad3); color:var(--on-tertiary,#1e2a4a); font-size:8px; font-weight:800; letter-spacing:.5px; padding:1px 6px; border-radius:20px; vertical-align:middle; text-transform:uppercase}
 
   .topbar-actions{display:flex; align-items:center; gap:8px}
   .topbar-actions .v-btn{background:var(--primary) !important; color:var(--on-primary) !important; border:1px solid var(--primary) !important;}
@@ -354,7 +364,7 @@
     </div>
     <div class="brand-text">
       <b>IoLab Design System</b>
-      <span>v1 · Vuetify 3 · Material 3 tokens</span>
+      <span><span class="version-badge">v1.0.1</span> · Vuetify 3 · Material 3 tokens</span>
     </div>
   </div>
   <div class="topbar-actions">

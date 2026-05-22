@@ -4,6 +4,15 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>IoLab — Design System & Logo</title>
+<script>
+  const APP_VERSION = '1.0.1';
+  (function(){
+    const k = 'iolab_v';
+    const prev = localStorage.getItem(k);
+    localStorage.setItem(k, APP_VERSION);
+    if (prev && prev !== APP_VERSION) location.reload(true);
+  })();
+</script>
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700;800;900&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
   *{margin:0;padding:0;box-sizing:border-box}
@@ -25,6 +34,7 @@
   .brand-mark{width:64px; height:64px; border-radius:12px; background:var(--surface); border:1px solid var(--border); display:flex; align-items:center; justify-content:center; padding:8px}
   .brand-text b{display:block; font-size:18px; font-weight:900; letter-spacing:-.3px}
   .brand-text span{font-size:11px; font-weight:700; letter-spacing:1.6px; color:var(--ink2); text-transform:uppercase; margin-top:3px; display:block}
+  .version-badge{display:inline-block; background:var(--cyan); color:var(--primary); font-size:9px; font-weight:800; letter-spacing:.6px; padding:2px 7px; border-radius:20px; vertical-align:middle; text-transform:uppercase}
 
   h1{font-size:48px; font-weight:900; letter-spacing:-1.4px; line-height:1.05; margin-bottom:14px}
   .lede{font-size:17px; color:var(--ink2); max-width:600px; margin-bottom:48px; line-height:1.55}
@@ -63,7 +73,7 @@
     </div>
     <div class="brand-text">
       <b>IoLab</b>
-      <span>Design assets · v1</span>
+      <span>Design assets · <span class="version-badge">v1.0.1</span></span>
     </div>
   </div>
 
